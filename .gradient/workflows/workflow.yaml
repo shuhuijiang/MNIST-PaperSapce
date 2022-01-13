@@ -27,7 +27,7 @@ jobs:
     needs:
       - CloneRepo
     inputs:
-      mnist-sample: CloneRepo.outputs.repo
+      repo: CloneRepo.outputs.repo
 
 
 
