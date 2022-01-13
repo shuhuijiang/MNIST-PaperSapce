@@ -1,37 +1,73 @@
+
 on:
   github:
     branches:
       only: main
-
+     
 jobs:
   CloneRepo:
     resources:
-      instance-type: C3
+      instance-type: C5
+    outputs:
+      repo:
+        type: volume
     uses: git-checkout@v1
     with:
-      url: https://github.com/shuhuijiang/MNIST-PaperSapce.git
-      # url: context.event.github.url
-      # ref: context.event.github.ref
-    outputs:
-      mnist-sample:
-        type: volume
-  TrainModel:
+      url: context.event.github.url
+  HelloWorld:
     resources:
-      instance-type: C3
-    env:
-      PS_MODEL_PATH: /my-trained-model
-    uses: container@v1
+      instance-type: C5
+    needs:
+      - CloneRepo
+    inputs:
+      repo: CloneRepo.outputs.repo
+    uses: script@v1
     with:
       args:
         - bash
         - -c
         - >-
-          cd /inputs/MNIST-PaperSapce && python mnist.py
-      image: tensorflow/tensorflow:1.15.5-py3
-    needs:
-      - CloneRepo
-    inputs:
-      MNIST-PaperSapce: CloneRepo.outputs.MNIST-PaperSapce
+          cd /inputs/repo && python hello.py
+      image: tensorflow/tensorflow:1.14.0-py3
+
+
+
+
+
+# on:
+#   github:
+#     branches:
+#       only: main
+
+# jobs:
+#   CloneRepo:
+#     resources:
+#       instance-type: C3
+#     uses: git-checkout@v1
+#     with:
+#       url: https://github.com/shuhuijiang/MNIST-PaperSapce.git
+#       # url: context.event.github.url
+#       # ref: context.event.github.ref
+#     outputs:
+#       mnist-sample:
+#         type: volume
+#   TrainModel:
+#     resources:
+#       instance-type: C3
+#     env:
+#       PS_MODEL_PATH: /my-trained-model
+#     uses: container@v1
+#     with:
+#       args:
+#         - bash
+#         - -c
+#         - >-
+#           cd /inputs/MNIST-PaperSapce && python mnist.py
+#       image: tensorflow/tensorflow:1.15.5-py3
+#     needs:
+#       - CloneRepo
+#     inputs:
+#       MNIST-PaperSapce: CloneRepo.outputs.MNIST-PaperSapce
 
 
 
@@ -65,7 +101,7 @@ jobs:
 #       mnist-sample: CloneRepo.outputs.mnist-sample
 
 
-# 'on':
+# on:
 #   github:
 #     branches:
 #       only: main
@@ -90,3 +126,6 @@ jobs:
 #     with:
 #       script: python /inputs/repo/hello.py
 #       image: tensorflow/tensorflow:1.14.0-py3
+
+
+
