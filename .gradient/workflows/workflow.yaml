@@ -22,7 +22,12 @@ jobs:
       PS_MODEL_PATH: /my-trained-model
     uses: container@v1
     with:
-      python /inputs/repo/mnist.py
+    with:
+      args:
+        - bash
+        - -c
+        - >-
+          cd /inputs/repo && python mnist.py
       image: tensorflow/tensorflow:1.15.5-py3
     needs:
       - CloneRepo
