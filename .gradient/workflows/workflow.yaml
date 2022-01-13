@@ -23,11 +23,7 @@ jobs:
       repo: CloneRepo.outputs.repo
     uses: script@v1
     with:
-      args:
-        - bash
-        - -c
-        - >-
-          cd /inputs/repo && python hello.py
+      script: python /inputs/repo/hello.py
       image: tensorflow/tensorflow:1.14.0-py3
 
 
