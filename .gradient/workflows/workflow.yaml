@@ -9,9 +9,9 @@ jobs:
       instance-type: C3
     uses: git-checkout@v1
     with:
-      #url: https://github.com/shuhuijiang/MNIST-PaperSapce.git
-      url: context.event.github.url
-      ref: context.event.github.ref
+      url: https://github.com/shuhuijiang/MNIST-PaperSapce.git
+      # url: context.event.github.url
+      # ref: context.event.github.ref
     outputs:
       repo:
         type: volume
@@ -22,7 +22,11 @@ jobs:
       PS_MODEL_PATH: /my-trained-model
     uses: container@v1
     with:
-      script: python /inputs/repo/mnist.py
+      args:
+        - bash
+        - -c
+        - >-
+          cd /inputs/repo && python mnist.py
       image: tensorflow/tensorflow:1.15.5-py3
     needs:
       - CloneRepo
