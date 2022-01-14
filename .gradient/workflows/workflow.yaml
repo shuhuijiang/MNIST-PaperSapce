@@ -32,6 +32,7 @@ jobs:
       - CloneRepo
     inputs:
       mnist-sample: CloneRepo.outputs.mnist-sample
+# test git config only selected repo
 
 
 # on:
