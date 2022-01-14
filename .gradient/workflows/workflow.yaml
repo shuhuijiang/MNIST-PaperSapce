@@ -9,8 +9,8 @@ jobs:
       instance-type: C3
     uses: git-checkout@v1
     with:
-      url: https://github.com/shuhuijiang/MNIST-PaperSapce.git
-      # url: context.event.github.url
+      #url: https://github.com/shuhuijiang/MNIST-PaperSapce.git
+      url: context.event.github.url
       # ref: context.event.github.ref
     outputs:
       repo:
