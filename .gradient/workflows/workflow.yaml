@@ -11,7 +11,6 @@ jobs:
     with:
       # url: https://github.com/gradient-ai/mnist-sample.git
       url: context.event.github.url
-      ref: context.event.github.ref
     outputs:
       mnist-sample:
         type: volume
