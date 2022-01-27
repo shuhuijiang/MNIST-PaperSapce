@@ -1,39 +1,80 @@
+# test workflow 18, same as workflow 14
 on:
   github:
     branches:
       only: main
-
 jobs:
   CloneRepo:
-    resources:
-      instance-type: C4
     uses: git-checkout@v1
     with:
-      # url: https://github.com/gradient-ai/mnist-sample.git
+      ref: context.event.github.ref
       url: context.event.github.url
-      #ref: context.event.github.ref
     outputs:
-      repo:
+      mnist-sample:
         type: volume
-  TrainModel:
     resources:
-      instance-type: C4
+      instance-type: C5
+  TrainModel:
     env:
       PS_MODEL_PATH: /my-trained-model
     uses: container@v1
     with:
       args:
         - bash
-        - -c
-        - >-
-          cd /inputs/repo && python mnist.py
+        - '-c'
+        - cd /inputs/mnist-sample && python mnist.py
       image: tensorflow/tensorflow:1.15.5-py3
     needs:
       - CloneRepo
     inputs:
-      repo: CloneRepo.outputs.repo
-# test git config only selected repo
+      mnist-sample: CloneRepo.outputs.mnist-sample
+    resources:
+      instance-type: C5
+context:
+  event:
+    github:
+      ref: d47c8377d02899a130d7b9348213515a84dfebbd
+      url: https://github.com/shuhuijiang/MNIST-PaperSapce
 
+## this is the workflow for Mnist example but not work
+
+# on:
+#   github:
+#     branches:
+#       only: main
+
+# jobs:
+#   CloneRepo:
+#     resources:
+#       instance-type: C4
+#     uses: git-checkout@v1
+#     with:
+#       # url: https://github.com/gradient-ai/mnist-sample.git
+#       url: context.event.github.url
+#       #ref: context.event.github.ref
+#     outputs:
+#       repo:
+#         type: volume
+#   TrainModel:
+#     resources:
+#       instance-type: C4
+#     env:
+#       PS_MODEL_PATH: /my-trained-model
+#     uses: container@v1
+#     with:
+#       args:
+#         - bash
+#         - -c
+#         - >-
+#           cd /inputs/repo && python mnist.py
+#       image: tensorflow/tensorflow:1.15.5-py3
+#     needs:
+#       - CloneRepo
+#     inputs:
+#       repo: CloneRepo.outputs.repo
+# # test git config only selected repo
+
+## this is the workflow for hello work example
 
 # on:
 #   github:
